@@ -1,0 +1,167 @@
+<configuration-set>
+set version 23.4R1-S1.5
+set groups member0 system host-name pe
+set groups member0 system backup-router 10.221.191.254
+set groups member0 interfaces fxp0 unit 0 family inet address 10.221.140.92/18
+set groups global system root-authentication encrypted-password "$1$ZUlES4dp$OUwWo1g7cLoV/aMWpHUnC/"
+set groups global system login class wheel permissions snmp
+set groups global system login user regress uid 928
+set groups global system login user regress class superuser
+set groups global system login user regress shell csh
+set groups global system login user regress authentication encrypted-password "$1$kPU..$w.4FGRAGanJ8U4Yq6sbj7."
+set groups global system login user remote uid 2000
+set groups global system login user remote class super-user
+set groups global system services netconf ssh
+set groups global system services ssh root-login allow
+set groups global system services finger
+set groups global system services ftp
+set groups global system services rlogin
+set groups global system services telnet
+set groups global system services xnm-clear-text
+set groups global system domain-name englab.juniper.net
+set groups global system domain-search englab.juniper.net
+set groups global system domain-search juniper.net
+set groups global system domain-search jnpr.net
+set groups global system time-zone Asia/Calcutta
+set groups global system debugger-on-break
+set groups global system dump-on-panic
+set groups global system authentication-order password
+set groups global system authentication-order radius
+set groups global system name-server 10.204.208.219
+set groups global system name-server 10.204.208.221
+set groups global system name-server 10.216.41.41
+set groups global system radius-server 10.48.144.16 secret "$9$TQ/t1IcSrKAt0IRheK8X7VYgaZDm5zNdiqmTn6"
+set groups global system radius-server 10.48.144.17 secret "$9$GqUqf3nCApOPfQn690ORhSeWL7-boZDylsgoGHk"
+set groups global system syslog host log kernel info
+set groups global system syslog host log any notice
+set groups global system syslog host log pfe info
+set groups global system syslog host log interactive-commands any
+set groups global system syslog file messages kernel info
+set groups global system syslog file messages any notice
+set groups global system syslog file messages authorization info
+set groups global system syslog file messages pfe info
+set groups global system syslog file messages archive world-readable
+set groups global system syslog file security interactive-commands any
+set groups global system syslog file security archive world-readable
+set groups global system processes routing enable
+set groups global system processes ntp enable
+set groups global system processes management enable
+set groups global system processes watchdog enable
+set groups global system processes snmp enable
+set groups global system processes inet-process enable
+set groups global system processes mib-process enable
+set groups global system ntp boot-server 66.129.255.75
+set groups global system ntp server 66.129.255.75
+set groups global system ntp server 172.29.131.60
+set groups global system ntp server 172.29.135.60
+set groups global chassis dump-on-panic
+set groups global snmp location "Systest lab"
+set groups global snmp contact "Jay Lloyd"
+set groups global snmp interface fxp0.0
+set groups global snmp community public authorization read-only
+set groups global snmp community private authorization read-write
+set groups global routing-options static route 172.16.0.0/12 next-hop 10.221.191.254
+set groups global routing-options static route 172.16.0.0/12 retain
+set groups global routing-options static route 172.16.0.0/12 no-readvertise
+set groups global routing-options static route 192.168.0.0/16 next-hop 10.221.191.254
+set groups global routing-options static route 192.168.0.0/16 retain
+set groups global routing-options static route 192.168.0.0/16 no-readvertise
+set groups global routing-options static route 10.0.0.0/8 next-hop 10.221.191.254
+set groups global routing-options static route 10.0.0.0/8 retain
+set groups global routing-options static route 10.0.0.0/8 no-readvertise
+set groups global routing-options static route 66.129.0.0/16 next-hop 10.221.191.254
+set groups global routing-options static route 66.129.0.0/16 retain
+set groups global routing-options static route 66.129.0.0/16 no-readvertise
+set apply-groups global
+set apply-groups member0
+set system ports console log-out-on-disconnect
+set interfaces ge-0/0/0 unit 0 family inet accounting source-class-usage input
+set interfaces ge-0/0/0 unit 0 family inet accounting source-class-usage output
+deactivate interfaces ge-0/0/0 unit 0 family inet accounting
+set interfaces ge-0/0/0 unit 0 family inet address 192.168.2.1/31
+set interfaces ge-0/0/0 unit 0 family mpls
+set interfaces ge-0/0/1 unit 0 family inet accounting source-class-usage input
+set interfaces ge-0/0/1 unit 0 family inet accounting source-class-usage output
+deactivate interfaces ge-0/0/1 unit 0 family inet accounting
+set interfaces ge-0/0/1 unit 0 family inet address 192.168.3.0/31
+set interfaces ge-0/0/1 unit 0 family mpls
+set interfaces lo0 unit 0 family inet address 3.3.3.3/32
+set policy-options policy-statement apn-exp then reject
+set policy-options policy-statement apn-imp term cnis from community apn
+set policy-options policy-statement apn-imp term cnis then accept
+set policy-options policy-statement apn-imp term corp from community corp
+set policy-options policy-statement apn-imp term corp then accept
+set policy-options policy-statement apn-imp then reject
+set policy-options policy-statement exp-lu term lo0 from protocol direct
+set policy-options policy-statement exp-lu term lo0 from route-filter 3.3.3.3/32 exact
+set policy-options policy-statement exp-lu term lo0 then accept
+set policy-options policy-statement exp-lu then reject
+set policy-options policy-statement exp-rr term apn from community apn
+set policy-options policy-statement exp-rr term apn then community set corp
+set policy-options policy-statement exp-rr term apn then accept
+set policy-options policy-statement lb then load-balance per-packet
+set policy-options policy-statement policing term apn from community apn
+set policy-options policy-statement policing term apn then next policy
+set policy-options policy-statement policing term apn then filter apn-pol
+set policy-options policy-statement tagging term cnis from community apn
+set policy-options policy-statement tagging term cnis then source-class apn-src
+set policy-options policy-statement tagging term cnis then next policy
+set policy-options policy-statement tagging term corp from community corp
+set policy-options policy-statement tagging term corp then source-class corp-src
+set policy-options policy-statement tagging term corp then next policy
+set policy-options community apn members target:65123:100
+set policy-options community corp members target:3269:100
+set firewall family inet filter vrf-scu term apn from source-class apn-src
+set firewall family inet filter vrf-scu term apn then policer vrf-pol-apn
+set firewall family inet filter vrf-scu term apn then count apn-src
+set firewall family inet filter vrf-scu term apn then accept
+set firewall family inet filter vrf-scu term corp from source-class corp-src
+set firewall family inet filter vrf-scu term corp then policer vrf-pol-corp
+set firewall family inet filter vrf-scu term corp then count corp-src
+set firewall family inet filter vrf-scu term corp then accept
+set firewall family inet filter vrf-scu term all then accept
+set firewall family any filter apn-pol term policing then policer pol-apn
+set firewall family any filter apn-pol term policing then accept
+set firewall family any filter apn-pol term all then accept
+set firewall policer pol-apn if-exceeding bandwidth-limit 20k
+set firewall policer pol-apn if-exceeding burst-size-limit 15k
+set firewall policer pol-apn then discard
+set firewall policer vrf-pol-apn if-exceeding bandwidth-limit 20k
+set firewall policer vrf-pol-apn if-exceeding burst-size-limit 15k
+set firewall policer vrf-pol-apn then discard
+set firewall policer vrf-pol-corp if-exceeding bandwidth-limit 20k
+set firewall policer vrf-pol-corp if-exceeding burst-size-limit 15k
+set firewall policer vrf-pol-corp then discard
+set routing-instances apn instance-type vrf
+set routing-instances apn forwarding-options family inet filter input vrf-scu
+deactivate routing-instances apn forwarding-options
+set routing-instances apn route-distinguisher 3.3.3.3:100
+set routing-instances apn vrf-import apn-imp
+set routing-instances apn vrf-export apn-exp
+set routing-instances apn vrf-table-label source-class-usage
+set routing-options resolution preserve-nexthop-hierarchy
+set routing-options autonomous-system 3269
+set routing-options forwarding-table export policing
+set routing-options forwarding-table export lb
+set protocols bgp group lu type external
+set protocols bgp group lu family inet labeled-unicast resolve-vpn
+set protocols bgp group lu export exp-lu
+set protocols bgp group lu local-as 65022
+set protocols bgp group lu local-as no-prepend-global-as
+set protocols bgp group lu neighbor 192.168.2.0 peer-as 65011
+set protocols bgp group rr type internal
+set protocols bgp group rr local-address 3.3.3.3
+set protocols bgp group rr family inet-vpn unicast
+set protocols bgp group rr export exp-rr
+set protocols bgp group rr neighbor 4.4.4.4
+set protocols bgp group cnis type external
+set protocols bgp group cnis multihop ttl 10
+set protocols bgp group cnis local-address 3.3.3.3
+set protocols bgp group cnis family inet-vpn unicast
+set protocols bgp group cnis peer-as 65123
+set protocols bgp group cnis neighbor 1.1.1.1
+set protocols ldp interface ge-0/0/1.0
+set protocols ldp interface lo0.0
+set protocols ospf area 0.0.0.0 interface lo0.0 passive
+set protocols ospf area 0.0.0.0 interface ge-0/0/1.0 interface-type p2p
+</configuration-set>
